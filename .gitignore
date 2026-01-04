@@ -1,1 +1,7 @@
-work_dirs/*
+data/*
+__pycache__/
+*.pyc
+mmdetection_github/work_dirs/*
+mmdetection_github/debug_isp_vis/*
+mmdetection_github/debug_vis/*
+

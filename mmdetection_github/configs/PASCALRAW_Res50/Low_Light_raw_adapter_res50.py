@@ -85,7 +85,7 @@ model = dict(
 
 
 dataset_type = 'PASCAL_RAW'
-data_root = './data/PASCAL_RAW/'
+data_root = '../data/PASCAL_RAW/'
 
 
 backend_args = None
@@ -110,8 +110,8 @@ test_pipeline = [
 ]
 
 train_dataloader = dict(
-    batch_size=4,
-    num_workers=4,
+    batch_size=8,
+    num_workers=8,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
     batch_sampler=dict(type='AspectRatioBatchSampler'),
@@ -174,7 +174,7 @@ optim_wrapper = dict(
     optimizer=dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001),
     clip_grad=dict(max_norm=35, norm_type=2))
 
-max_epochs = 10  # the real epoch is 7*5 = 35
+max_epochs = 35  # the real epoch is 7*5 = 35
 # learning policy
 # Based on the default settings of modern detectors, we added warmup settings.
 param_scheduler = [

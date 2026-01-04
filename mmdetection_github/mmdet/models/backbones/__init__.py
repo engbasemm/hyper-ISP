@@ -18,11 +18,13 @@ from .ssd_vgg import SSDVGG
 from .swin import SwinTransformer
 from .trident_resnet import TridentResNet
 from .RAW_resnet import RAW_ResNet
+from .hyper_isp_adapter import HyperISPAdapter
+from .hyper_isp_resnet import HyperISPResNet
 
 __all__ = [
     'RegNet', 'ResNet', 'ResNetV1d', 'ResNeXt', 'SSDVGG', 'HRNet',
     'MobileNetV2', 'Res2Net', 'HourglassNet', 'DetectoRS_ResNet',
     'DetectoRS_ResNeXt', 'Darknet', 'ResNeSt', 'TridentResNet', 'CSPDarknet',
     'SwinTransformer', 'PyramidVisionTransformer',
-    'PyramidVisionTransformerV2', 'EfficientNet', 'CSPNeXt', 'RAW_ResNet'
+    'PyramidVisionTransformerV2', 'EfficientNet', 'CSPNeXt', 'RAW_ResNet' , 'HyperISPAdapter' , 'HyperISPResNet'
 ]
