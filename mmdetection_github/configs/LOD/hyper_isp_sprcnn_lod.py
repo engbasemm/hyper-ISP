@@ -36,7 +36,7 @@ model = dict(
         isp_out_channels=3,
         isp_mode='dynamic',
         use_camera_rgb=False,
-        #use_denoising=True,
+        ##use_denoising=True,
         #feature_channels=32,
         vis_subdir='RES50_LOD_SpRCNN_Hyper'
     ),
@@ -133,7 +133,7 @@ test_pipeline = [
 # Dataloaders
 train_dataloader = dict(
     batch_size=8,
-    num_workers=8,
+    num_workers=4,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
     batch_sampler=dict(type='AspectRatioBatchSampler'),
@@ -178,17 +178,13 @@ test_dataloader = val_dataloader
 val_evaluator = dict(type='VOCMetric', metric='mAP', eval_mode='11points')
 test_evaluator = val_evaluator
 
-# Optimizer (Matched to Baseline: AdamW, low LR, Clip Grad)
 optim_wrapper = dict(
-    type='OptimWrapper',
     optimizer=dict(
-        type='AdamW',
-        lr=0.000025,
-        weight_decay=0.0001),
+        _delete_=True, type='AdamW', lr=0.000025, weight_decay=0.0001),
     clip_grad=dict(max_norm=1, norm_type=2))
 
 # Schedule
-max_epochs = 15
+max_epochs = 35
 param_scheduler = [
     dict(
         type='LinearLR', start_factor=0.001, by_epoch=False, begin=0,
