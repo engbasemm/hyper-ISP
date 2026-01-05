@@ -26,31 +26,33 @@ class HyperISPResNet(ResNet):
         # 2. Extract Hyper-ISP specific args from kwargs
         # We use .pop() so they are REMOVED from kwargs and not passed to ResNet
         isp_mode = kwargs.pop('isp_mode', 'dynamic')
+        use_camera_rgb = kwargs.pop('use_camera_rgb', True)
 
         # 3. Initialize Standard ResNet
-        # Now kwargs only contains valid ResNet arguments (like num_stages, etc.)
         super(HyperISPResNet, self).__init__(depth=depth, in_channels=isp_out_channels, **kwargs)
 
         # 4. Initialize Hyper-ISP
         self.hyper_isp = HyperISPAdapter(
             bit_depth=bit_depth,
             output_channels=isp_out_channels,
-            isp_mode=isp_mode,
+            #isp_mode=isp_mode,
+            #use_camera_rgb=use_camera_rgb
         )
 
         # --- SMART VISUALIZATION PATH ---
         self.vis_count = 0
         self.vis_interval = 200
 
-        # Try to use the provided subdir, or fallback to a generic name
+        # Use the provided subdir, or construct a meaningful default
         if vis_subdir:
             self.vis_dir = os.path.join('debug_vis', vis_subdir)
         else:
-            self.vis_dir = os.path.join('debug_vis', f'resnet{depth}_{isp_mode}')
+            # Fallback format: debug_vis/resnet18_dynamic_phys
+            mode_suffix = "phys" if use_camera_rgb else "feat"
+            self.vis_dir = os.path.join('debug_vis', f'resnet{depth}_{isp_mode}_{mode_suffix}')
 
         if int(os.environ.get('LOCAL_RANK', 0)) == 0:
             os.makedirs(self.vis_dir, exist_ok=True)
-            # print(f"[HyperISP] Visualization Enabled. Saving to: {self.vis_dir}")
 
     def visualize_internals(self, raw, isp_out):
         """
@@ -71,7 +73,6 @@ class HyperISPResNet(ResNet):
                 vis_isp = (vis_isp - vis_isp.min()) / (vis_isp.max() - vis_isp.min() + 1e-6)
 
                 # Stack: Raw (Left), ISP (Right)
-                # Concatenate along width (dim=2) for side-by-side
                 comparison = torch.cat([vis_raw, vis_isp], dim=2)
 
                 filename = os.path.join(self.vis_dir, f'step_{self.vis_count}.png')
