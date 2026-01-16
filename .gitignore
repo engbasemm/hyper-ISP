@@ -4,4 +4,4 @@ __pycache__/
 mmdetection_github/work_dirs/*
 mmdetection_github/debug_isp_vis/*
 mmdetection_github/debug_vis/*
-
+mmdetection_github/debug_isp_vis_basic_rev/*
