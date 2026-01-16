@@ -1,4 +1,4 @@
-_base_ = ['./Low_Light_raw_adapter_res18.py']
+_base_ = ['./Normal_Light_raw_adapter_res18.py']
 
 model = dict(
     backbone=dict(

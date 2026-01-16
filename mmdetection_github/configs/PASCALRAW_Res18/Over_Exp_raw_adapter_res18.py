@@ -109,7 +109,7 @@ test_pipeline = [
 
 train_dataloader = dict(
     batch_size=8,
-    num_workers=4,
+    num_workers=8,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
     batch_sampler=dict(type='AspectRatioBatchSampler'),
@@ -167,10 +167,19 @@ test_evaluator = val_evaluator
 # optim_wrapper = dict(clip_grad=dict(max_norm=35, norm_type=2))
 
 # optimizer
+# Optimizer with gradient clipping
+# === STABILITY FIXES ===
 optim_wrapper = dict(
+    _delete_=True,  # <--- THIS IS CRITICAL. It deletes the base SGD config.
     type='OptimWrapper',
-    optimizer=dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001),
-    clip_grad=dict(max_norm=35, norm_type=2))
+    optimizer=dict(type='AdamW', lr=0.0001, weight_decay=0.0001),
+    clip_grad=dict(max_norm=1.0, norm_type=2),
+    paramwise_cfg=dict(
+        custom_keys={
+            'hyper_isp.lut.lut': dict(lr_mult=0.1, decay_mult=1.0)
+        }
+    )
+)
 
 max_epochs = 35  # the real epoch is 7*5 = 35
 # learning policy

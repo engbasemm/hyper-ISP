@@ -36,6 +36,12 @@ model = dict(
 
 # Standard SGD Optimizer
 optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)
+# New (Faster)
+#optim_wrapper = dict(
+#    type='AmpOptimWrapper',  # <--- Use AmpOptimWrapper
+#    dtype='float16',         # <--- Enable float16
+#    optimizer=dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001),
+#    clip_grad=dict(max_norm=35, norm_type=2))
 
 # Standard Schedule
 param_scheduler = [
