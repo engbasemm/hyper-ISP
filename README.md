@@ -356,6 +356,7 @@ If you find this work useful, please consider citing:
 
 ## 🙏 Acknowledgments
 
+- Thanks to RAW Adaptor framework
 - Built on MMDetection framework
 - Evaluated on LOD and PASCAL RAW benchmarks
 - Inspired by μ-law encoding from audio signal processing
