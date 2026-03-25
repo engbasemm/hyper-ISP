@@ -1,7 +1,7 @@
 # Inherit from the ResNet-50 baseline if available. 
 # If not, inheriting from Res18 and overriding is fine, but we MUST override everything.
 _base_ = ['./Over_Exp_raw_adapter_res50.py']
-# Note: Ensure 'Low_Light_raw_adapter_res50.py' exists in this folder. 
+# Note: Ensure 'Low_Light_raw_adapter_res50.py' exists in this folder.
 # If it doesn't, check if it's named 'LowLight_...' or similar.
 
 model = dict(
@@ -13,7 +13,8 @@ model = dict(
         bit_depth=14,
         isp_out_channels=3,
         isp_mode='dynamic',
-        vis_subdir='RES50_PASCAL_Over_Exp_hyper',
+        vis_subdir='RES50_PASCAL_Normal_Light_hyper',
+
         # 3. ResNet-50 Specifics
         depth=50,
         num_stages=4,
@@ -44,22 +45,6 @@ model = dict(
     )
 )
 
-# ResNet-50 is heavier, so we often adjust batch size or LR, 
+# ResNet-50 is heavier, so we often adjust batch size or LR,
 # but for fair comparison, keep settings as close to baseline as possible.
-#optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)
-
-
-
-# Optimizer with gradient clipping
-# === STABILITY FIXES ===
-optim_wrapper = dict(
-    _delete_=True,  # <--- THIS IS CRITICAL. It deletes the base SGD config.
-    type='OptimWrapper',
-    optimizer=dict(type='AdamW', lr=0.0001, weight_decay=0.0001),
-    clip_grad=dict(max_norm=1.0, norm_type=2),
-    paramwise_cfg=dict(
-        custom_keys={
-            'hyper_isp.lut.lut': dict(lr_mult=0.1, decay_mult=1.0)
-        }
-    )
-)
+optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)

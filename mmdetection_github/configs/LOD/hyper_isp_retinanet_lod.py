@@ -160,7 +160,7 @@ optim_wrapper = dict(
     clip_grad=dict(max_norm=35, norm_type=2))
 
 # Schedule
-max_epochs = 35
+max_epochs = 100
 param_scheduler = [
     dict(
         type='LinearLR', start_factor=0.001, by_epoch=False, begin=0,

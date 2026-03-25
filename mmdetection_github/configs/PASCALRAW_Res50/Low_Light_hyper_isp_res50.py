@@ -47,4 +47,17 @@ model = dict(
 
 # ResNet-50 is heavier, so we often adjust batch size or LR, 
 # but for fair comparison, keep settings as close to baseline as possible.
-optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)
+#optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)
+# Optimizer with gradient clipping
+# === STABILITY FIXES ===
+optim_wrapper = dict(
+    _delete_=True,  # <--- THIS IS CRITICAL. It deletes the base SGD config.
+    type='OptimWrapper',
+    optimizer=dict(type='AdamW', lr=0.0001, weight_decay=0.0001),
+    clip_grad=dict(max_norm=1.0, norm_type=2),
+    paramwise_cfg=dict(
+        custom_keys={
+            'hyper_isp.lut.lut': dict(lr_mult=0.1, decay_mult=1.0)
+        }
+    )
+)
